@@ -223,3 +223,9 @@ from employees e
 where extract(year from e.hire_date) like '%02'
 group by extract(month from e.hire_date)
 order by 2;
+
+/*23*/
+select m.employee_id, count(e.employee_id)
+from employees m join employees e on(m.employee_id = e.manager_id)
+group by m.employee_id
+order by count(e.employee_id);
