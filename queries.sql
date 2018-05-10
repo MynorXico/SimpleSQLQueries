@@ -229,3 +229,29 @@ select m.employee_id, count(e.employee_id)
 from employees m join employees e on(m.employee_id = e.manager_id)
 group by m.employee_id
 order by count(e.employee_id);
+
+/*24*/
+SELECT e.employee_id, jh.end_date
+FROM employees e inner join job_history jh on(e.employee_id = jh.employee_id);
+
+/*25*/
+SELECT count(e.employee_id)
+FROM employees e
+WHERE extract(day from e.hire_date) > 15;
+
+
+/*26*/
+SELECT cn.country_id nCities, count(l.location_id)
+FROM countries cn join locations l on(cn.country_id = l.country_id)
+group by cn.country_id;
+
+/*27*/
+SELECT round(avg(e.salary),2), d.department_name
+FROM employees e join departments d on(e.department_id = d.department_id)
+WHERE e.commission_pct IS NOT NULL
+GROUP BY d.department_name;
+
+/*28*/
+SELECT count(e.employee_id), sum(e.salary), max(e.salary)-min(e.salary), j.job_title
+FROM employees e join jobs j on(e.job_id = j.job_id)
+group by e.job_id, j.job_title;
