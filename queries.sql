@@ -217,3 +217,9 @@ WHERE e.hire_date like '%18';
 select round(sysdate-to_date('01/01/2011'),0)
 from dual;
 
+/*22 (asumiendo el año actual es 2002)*/
+select count(e.employee_id), extract(month from e.hire_date)
+from employees e
+where extract(year from e.hire_date) like '%02'
+group by extract(month from e.hire_date)
+order by 2;
