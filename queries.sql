@@ -200,3 +200,8 @@ FROM employees e;
 /*17*/
 SELECT j.job_title, nvl(substr(j.job_title, 1, instr(j.job_title, ' ')-1), j.job_title)
 FROM jobs j;
+
+
+/*18*/
+SELECT j.job_title, length(nvl(substr(j.job_title, 1, instr(j.job_title, ' ')-1), j.job_title)) length
+from jobs j;
