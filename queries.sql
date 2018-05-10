@@ -175,10 +175,7 @@ FROM employees e
 where e.department_id = 30 and e.commission_pct is null and e.salary between 5000 and 10000;
 
 SELECT * FROM JOB_HISTORY;
-/*13*/
-SELECT e.first_name, jh.start_date, e.employee_id,min(start_date)
-FROM employees e join job_history jh on (e.employee_id = jh.employee_id)
-GROUP BY e.employee_id
-ORDER BY jh.start_date, e.first_name, jh.start_date
-;
+
+
+
 
