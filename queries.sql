@@ -191,3 +191,7 @@ FROM employees e;
 SELECT e.first_name, e.hire_date
 FROM employees e
 WHERE e.hire_date LIKE '%01';
+
+/*16*/
+SELECT INITCAP(e.first_name), INITCAP(e.last_name)
+FROM employees e;
