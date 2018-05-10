@@ -195,3 +195,8 @@ WHERE e.hire_date LIKE '%01';
 /*16*/
 SELECT INITCAP(e.first_name), INITCAP(e.last_name)
 FROM employees e;
+
+
+/*17*/
+SELECT j.job_title, nvl(substr(j.job_title, 1, instr(j.job_title, ' ')-1), j.job_title)
+FROM jobs j;
