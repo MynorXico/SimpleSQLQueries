@@ -183,3 +183,11 @@ FROM employees e join job_history jh on (e.employee_id = jh.employee_id)
 GROUP BY e.employee_id, e.first_name, jh.start_date
 ORDER BY jh.start_date, e.first_name, jh.start_date;
 
+/*14*/
+SELECT e.first_name name, round((sysdate - e.hire_date), 0) as Experiencia, sysdate, e.hire_date
+FROM employees e;
+
+/*15*/
+SELECT e.first_name, e.hire_date
+FROM employees e
+WHERE e.hire_date LIKE '%01';
