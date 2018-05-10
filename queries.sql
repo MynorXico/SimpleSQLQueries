@@ -175,8 +175,6 @@ FROM employees e
 where e.department_id = 30 and e.commission_pct is null and e.salary between 5000 and 10000;
 
 SELECT * FROM JOB_HISTORY;
-
-
 /*13*/
 SELECT e.first_name, jh.start_date, e.employee_id,min(start_date)
 FROM employees e join job_history jh on (e.employee_id = jh.employee_id)
@@ -196,12 +194,26 @@ WHERE e.hire_date LIKE '%01';
 SELECT INITCAP(e.first_name), INITCAP(e.last_name)
 FROM employees e;
 
-
 /*17*/
 SELECT j.job_title, nvl(substr(j.job_title, 1, instr(j.job_title, ' ')-1), j.job_title)
 FROM jobs j;
 
-
 /*18*/
 SELECT j.job_title, length(nvl(substr(j.job_title, 1, instr(j.job_title, ' ')-1), j.job_title)) length
 from jobs j;
+
+/*19*/
+desc employees;
+SELECT upper(e.first_name), lower(e.email)
+from employees e;
+where upper(e.first_name)=upper(e.email);
+
+/*20*/
+SELECT *
+FROM employees e
+WHERE e.hire_date like '%18';
+
+/*21*/
+select round(sysdate-to_date('01/01/2011'),0)
+from dual;
+
