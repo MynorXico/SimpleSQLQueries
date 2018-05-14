@@ -239,7 +239,6 @@ SELECT count(e.employee_id)
 FROM employees e
 WHERE extract(day from e.hire_date) > 15;
 
-
 /*26*/
 SELECT cn.country_id nCities, count(l.location_id)
 FROM countries cn join locations l on(cn.country_id = l.country_id)
@@ -251,7 +250,167 @@ FROM employees e join departments d on(e.department_id = d.department_id)
 WHERE e.commission_pct IS NOT NULL
 GROUP BY d.department_name;
 
+desc jobs;
 /*28*/
 SELECT count(e.employee_id), sum(e.salary), max(e.salary)-min(e.salary), j.job_title
 FROM employees e join jobs j on(e.job_id = j.job_id)
 group by e.job_id, j.job_title;
+
+/*29*/
+SELECT e.job_id, avg(e.salary)
+FROM employees e
+HAVING avg(e.salary) > 10000
+group by e.job_id;
+
+/*30*/
+SELECT extract(year from e.hire_date), count(e.employee_id)
+FROM employees e
+HAVING count(e.employee_id) > 10
+GROUP BY extract(year from e.hire_date);
+
+/*31*/
+select * from employees
+where employee_id = 115;
+UPDATE employees e
+SET e.salary = 8000
+where e.employee_id = 115 and e.salary < 6000;
+;
+select * from jobs;
+insert into employees(employee_id, last_name, email, hire_date, job_id) values (10000, 'first_name', 'mynor', '1/2/05', 'AD_ASST');
+
+select e.first_name, e.employee_id, j.job_title, j.max_salary - j.min_salary
+FROM employees e left outer join jobs j on (e.job_id = j.job_id);
+
+select j.job_title
+from employees e join jobs j on(e.job_id = j.job_id)
+where e.salary > 15000
+group by j.job_title;
+
+select e.salary, j.job_title
+from employees e join jobs j on(e.job_id = j.job_id);
+
+delete from departments
+where department_id = 20;
+
+/*31*/
+SELECT d.department_id, d.department_name
+FROM employees e JOIN departments d ON (e.department_id = d.department_id)
+WHERE e.commission_pct > 0 or e.commission_pct is not null
+GROUP BY d.department_id, d.department_name
+HAVING count(e.employee_id) > 5;
+
+desc job_history;
+
+
+/*32*/
+SELECT e.employee_id, e.first_name
+FROM employees e JOIN job_history h ON (e.employee_id = h.employee_id)
+GROUP BY e.employee_id, e.first_name;
+
+
+/*33*/
+desc jobs;
+SELECT j.job_id 
+FROM jobs j JOIN job_history e ON (j.job_id = e.job_id)
+WHERE (e.end_date - e.start_date) > 100
+GROUP BY j.job_id 
+HAVING COUNT(e.employee_id) > 3;
+
+/*34*/
+SELECT d.department_id, extract(year FROM  e.hire_date), COUNT(e.employee_id)
+FROM employees e JOIN departments d ON(d.department_id = e.department_id)
+GROUP BY d.department_id, extract(year FROM e.hire_date)
+ORDER BY department_id;
+
+desc departments;
+/* 35 */
+SELECT d.department_id, d.department_name, d.manager_id
+FROM departments d JOIN employees m ON (d.manager_id = m.employee_id)
+JOIN employees e ON (e.manager_id = m.employee_id)
+GROUP BY d.department_id, d.department_name, d.manager_id
+HAVING count(e.employee_id) > 5;
+
+/*36*/
+UPDATE employees e
+SET e.salary = 8000
+WHERE e.employee_id = 115 and e.salary < 6000;
+
+select * from jobs;
+/*37*/
+DESC EMPLOYEES;
+INSERT INTO EMPLOYEES(employee_id, last_name, email, hire_date, job_id) VALUES(789, 'LAST_NAME_TEST', 'EMAIL_TEST', '01/01/03', 'AC_ACCOUNT');
+
+/*38*/ /*Not valid because table doesn't support cascade deleting jeje */
+DELETE EMPLOYEES E
+WHERE E.DEPARTMENT_ID = 20;
+
+/*39*/
+UPDATE employees e
+SET e.job_id = 'IT_PROG' 
+where e.department_id = 10 and e.job_id NOT LIKE 'IT%';
+
+/*40*/
+SELECT * FROM LOCATIONS
+ORDER BY CITY;
+
+DESC DEPARTMENTS;
+INSERT INTO DEPARTMENTS(manager_id,department_id, department_name) values(120, (
+                                                                                SELECT location_id FROM
+                                                                                LOCATIONS WHERE CITY LIKE 'Tokyo'
+                                                                            ) , 'JEJE');
+                                                                            
+/*41*/
+SELECT d.department_name, count(e.employee_id)
+FROM departments d JOIN employees e ON (d.department_id = e.department_id)
+GROUP BY d.department_name;
+
+/*42*/
+DESC job_history;
+SELECT j.job_title, jh.employee_id, (jh.end_date - jh.start_date) WORKED_DAYS
+FROM jobs j JOIN job_history jh ON (j.job_id = jh.job_id)
+where jh.department_id = 30;
+
+/*43*/
+SELECT d.department_name, m.first_name
+FROM departments d JOIN employees m ON (d.manager_id = m.employee_id);
+
+/*44*/
+DESC LOCATIONS;
+SELECT d.department_name, m.first_name || ' ' || m.last_name MANAGER, l.city
+FROM departments d JOIN employees m ON (d.manager_id = m.employee_id)
+JOIN locations l ON (d.location_id = l.location_id);
+
+/*45*/
+SELECT c.country_name, l.city, d.department_name
+FROM countries c JOIN locations l ON (c.country_id = l.country_id)
+JOIN departments d ON (d.location_id = l.location_id);
+
+/*46*/
+DESC job_history;
+SELECT j.job_title, d.department_name, e.last_name, jh.start_date, jh.end_date
+FROM job_history jh JOIN jobs j ON (jh.job_id = j.job_id)
+JOIN departments d ON (jh.department_id = d.department_id)
+JOIN employees e ON (jh.employee_id = e.employee_id)
+WHERE jh.start_date > '01/01/2000' and jh.end_date < '31/12/2005';
+
+/*47*/
+SELECT j.job_title, ROUND(avg(e.salary),2)
+FROM jobs j JOIN employees e ON (j.job_id = e.job_id)
+GROUP BY j.job_title
+ORDER BY 1;
+
+/*48*/
+SELECT j.job_title, nvl(e.first_name, ' '), nvl(abs(j.max_salary - e.salary), 0) difference
+FROM jobs j JOIN employees e ON (j.job_id = e.job_id);
+
+/*49*/
+SELECT e.last_name, j.job_title
+FROM employees e JOIN jobs j ON (e.job_id = j.job_id)
+WHERE e.commission_pct is not null and e.commission_pct > 0 and e.department_id = 30;
+
+/*50*/
+SELECT j.job_id, j.job_title
+FROM job_history jh JOIN jobs j ON (jh.job_id = j.job_id)
+JOIN employees e ON (e.employee_id = jh.employee_id)
+WHERE e.salary = 17000
+GROUP BY j.job_id, j.job_title;
